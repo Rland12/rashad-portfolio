@@ -1,11 +1,48 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Comfortaa', cursive;
+}
+
+p{
+    font-size: 18px;
+}
+
+.home-parallax {
+    background-image: url('images/homepage-image.gif');
+    height: 100%; 
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.home-text{
+    color:white;
+    text-shadow: 2px 2px black;
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
   width: 650px;
+  display: flex;
+  align-items: center;
+  text-align: center;
 }
 .rashad-suit{
-    width:25%;
+    object-fit: contain;
+    align-self: flex-start;
+    width: 25%;
+    margin: 24px 31px 0 0;
 }
-#greeting-container {
+/* .about{
+    
+} */
+/* #greeting-container {
   margin-top: 20px;
-}
+} */
