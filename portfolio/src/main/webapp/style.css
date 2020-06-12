@@ -3,7 +3,9 @@
   margin-right: auto;
   width: 650px;
 }
-
+.rashad-suit{
+    width:25%;
+}
 #greeting-container {
   margin-top: 20px;
 }
