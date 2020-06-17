@@ -25,6 +25,9 @@ p{
     color:white;
     text-shadow: 2px 2px black;
 }
+data-container{
+    color:white;
+}
 
 #content {
   margin-left: auto;
