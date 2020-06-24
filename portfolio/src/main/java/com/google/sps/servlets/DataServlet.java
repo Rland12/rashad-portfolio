@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
+import java.util.ArrayList;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,9 +26,27 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+    // public static void main(String[] args){ 
+    // ArrayList<String> favorite = new ArrayList<String>();
+    //     favorite.add("Red");
+    //     favorite.add("Orange");
+    //     favorite.add("Pho");
+        
+    // }
+ 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Rashad!</h1>");
+     ArrayList<String> favorite = new ArrayList<String>();
+        favorite.add("Red");
+        favorite.add("Orange");
+        favorite.add("Pho");
+        String color = favorite.get(0);
+        String fruit = favorite.get(1);
+        String food = favorite.get(2);
+        Gson gson = new Gson();
+        String json = gson.toJson(favorite);
+request.setAttribute("fact", favorite);
+        response.setContentType("application/json;");
+        response.getWriter().println(json);
   }
 }
