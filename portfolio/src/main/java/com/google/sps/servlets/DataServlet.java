@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
+@WebServlet("/text")
 public class DataServlet extends HttpServlet {
 
     // public static void main(String[] args){ 
@@ -34,19 +34,27 @@ public class DataServlet extends HttpServlet {
         
     // }
  
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-     ArrayList<String> favorite = new ArrayList<String>();
-        favorite.add("Red");
-        favorite.add("Orange");
-        favorite.add("Pho");
-        String color = favorite.get(0);
-        String fruit = favorite.get(1);
-        String food = favorite.get(2);
-        Gson gson = new Gson();
-        String json = gson.toJson(favorite);
-request.setAttribute("fact", favorite);
-        response.setContentType("application/json;");
-        response.getWriter().println(json);
+//   @Override
+//   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//         Gson gson = new Gson();
+//         String json = gson.toJson();
+//         response.setContentType("application/json;");
+//         response.getWriter().println(json);
+//   }
+   @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String text = getParameter(request, "text-input", "");
+
+    // Respond with the result.
+    response.setContentType("text/html;");
+    response.getWriter().println(text);
+  }
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }
