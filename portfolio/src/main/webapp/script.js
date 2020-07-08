@@ -28,7 +28,23 @@
 //   greetingContainer.innerText = greeting;
 // }
 async function getDataUsingAsyncAwait() {
-  const response = await fetch('/data');
-  const data = await response.text();
-  document.getElementById('data-container').innerText = data;
+   //const response = await fetch('/data');
+   fetch('/data').then(response => response.json()).then((favorite) => {
+  //const data = await response.json(favorite);
+  const getParagraph = document.getElementById('data-container');
+  getParagraph.innerHTML=favorite;
+//   getParagraph.appendChild(
+//         createParagraph('Favorite Color: ' + favorite.color));
+//     getParagraph.appendChild(
+//         createParagraph('Favorite Fruit: ' + favorite.fruit));
+//     getParagraph.appendChild(
+//         createParagraph('Comfort Food: ' + favorite.food));
+    
+  console.log(data);
+   });
+}
+function createParagraph(text) {
+  const paragraph = document.createElement('p');
+  paragraph.innerText = text;
+  return paragraph;
 }
