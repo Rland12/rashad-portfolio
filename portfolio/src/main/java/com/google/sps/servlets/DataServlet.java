@@ -13,7 +13,9 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
-
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -44,8 +46,11 @@ public class DataServlet extends HttpServlet {
    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
-    String text = getParameter(request, "text-input", "");
-
+    String text = request.getParameter("text-input");
+    Entity taskEntity = new Entity("Task");
+    taskEntity.setProperty("text", text);
+ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+ datastore.put(taskEntity);
     // Respond with the result.
     response.setContentType("text/html;");
     response.getWriter().println(text);
