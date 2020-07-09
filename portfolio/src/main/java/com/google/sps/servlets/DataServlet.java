@@ -16,8 +16,11 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,14 +49,25 @@ public class DataServlet extends HttpServlet {
    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
+    
     String text = request.getParameter("text-input");
     Entity taskEntity = new Entity("Task");
     taskEntity.setProperty("text", text);
- DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
- datastore.put(taskEntity);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(taskEntity);
+ Query query = new Query("Task");
+    PreparedQuery results = datastore.prepare(query);
+   List<String> tasks = new ArrayList<>();
+ for (Entity entity : results.asIterable()) {
+      String comment = (String) entity.getProperty("text");
+      String task = new String(comment);
+      tasks.add(task);
+    }
+    Gson gson = new Gson();
     // Respond with the result.
     response.setContentType("text/html;");
-    response.getWriter().println(text);
+    response.getWriter().println(gson.toJson(tasks));
   }
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
