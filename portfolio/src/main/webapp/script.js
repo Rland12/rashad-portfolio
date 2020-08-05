@@ -27,24 +27,27 @@
 //   const greetingContainer = document.getElementById('greeting-container');
 //   greetingContainer.innerText = greeting;
 // }
-async function getDataUsingAsyncAwait() {
-   //const response = await fetch('/data');
-   fetch('/data').then(response => response.json()).then((favorite) => {
-  //const data = await response.json(favorite);
-  const getParagraph = document.getElementById('data-container');
-  getParagraph.innerHTML=favorite;
-//   getParagraph.appendChild(
-//         createParagraph('Favorite Color: ' + favorite.color));
-//     getParagraph.appendChild(
-//         createParagraph('Favorite Fruit: ' + favorite.fruit));
-//     getParagraph.appendChild(
-//         createParagraph('Comfort Food: ' + favorite.food));
-    
-  console.log(data);
-   });
+function loadTasks() {
+  fetch('/form-content').then(response => response.json()).then((tasks) => {
+    const comment = document.getElementById('data-container');
+    tasks.forEach((task) => {
+      comment.innerText=task;
+    })
+  });
 }
 function createParagraph(text) {
   const paragraph = document.createElement('p');
+//   body.querySelector('#image-Url').src = listing.imageUrl;
   paragraph.innerText = text;
   return paragraph;
 }
+// function fetchBlobstoreUrlAndShowForm() {
+//   fetch('/blobstore-upload-url')
+//       .then((response) => {
+//         return response.text();
+//       })
+//       .then((imageUploadUrl) => {
+//         const messageForm = document.getElementById('my-post');
+//         messageForm.action = imageUploadUrl;
+//       });
+// }

@@ -1,44 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
-    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
-    <script src="script.js"></script>
-  </head>
-	<body>
-		<div class="home-parallax">
-	    	<div class="home-text">
-    			<h1>Hi, my name is Rashad</h1><br>
-    			<p>This is my portfolio.</p><br>
+
+<head>
+	<meta charset="UTF-8">
+	<title>My Portfolio</title>
+	<link rel="stylesheet" href="style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+	<script src="script.js"></script>
+</head>
+
+<body onload="fetchBlobstoreUrlAndShowForm()">
+	<div class="home-parallax">
+		<div class="home-text">
+			<h1>Hi, my name is Rashad</h1><br>
+			<p>This is my portfolio.</p><br>
 			</div>
-    	</div>
-    	<div id="content">
-        	<img class="rashad-suit" src="images/rashad-suit.jpeg" alt="Picture of Rashad in a suit">
-        	<div class="about">
-            	<h2>About Me</h2>
-            	<p>Many of my interests include watching horror movies, 
-            	playing video games and listening to different types of music.
-            	I have such a huge passion for technology and gaming 
-           		that I am working towards becoming a game designer. I want to create unique experiences 
-           		that portray the same inspiration and excitement that I had when I first started playing games.</p>
-        	</div>
-    	</div>
-        <div class="comments-parallax">
-	    	<div class="comments-text">
-    			<h2>Comments</h2><br>
-    			<p>Here is what people are saying about me.</p><br>
-                <form action="/text" method="POST">
-      				<p>Type Comment here:</p>
-      				<textarea name="text-input" placeholder="Comment..."></textarea>
-     				<input type="submit" />
+		</div>
+		<div id="content">
+			<img class="rashad-suit" src="images/rashad-suit.jpeg" alt="Picture of Rashad in a suit">
+			<div class="about">
+				<h2>About Me</h2>
+				<p>Many of my interests include watching horror movies,
+					playing video games and listening to different types of music.
+					I have such a huge passion for technology and gaming
+					that I am working towards becoming a game designer. I want to create unique experiences
+					that portray the same inspiration and excitement that I had when I first started playing games.</p>
+			</div>
+		</div>
+		<div class="comments-parallax">
+			<div class="comments-text">
+				<h2>Comments</h2><br>
+				<p>Here is what people are saying about me.</p><br>
+				<form id="my-post" action="/form-content" method="POST" enctype="multipart/form-data">
+					<p>Type Comment here:</p>
+					<textarea name="text-input" placeholder="Comment..."></textarea>
+					<input type="file" name="image">
+					<input type="submit" />
     			</form>
-                <!-- <button onclick="getDataUsingAsyncAwait()">Comment</button> -->
-                <div id="data-container"></div>
-    
+					<!-- <button onclick="getDataUsingAsyncAwait()">Comment</button> -->
+					<div id="data-container"></div>
+					<img id="post-image" src="" >
 			</div>
-    	</div>
-  	</body>
+			</div>
+</body>
+
 </html>
