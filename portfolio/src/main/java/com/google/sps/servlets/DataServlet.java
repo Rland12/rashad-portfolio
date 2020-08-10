@@ -15,12 +15,22 @@
 package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.images.ImagesService;
+import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,47 +38,83 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/text")
+@WebServlet("/form-content")
 public class DataServlet extends HttpServlet {
 
-    // public static void main(String[] args){ 
-    // ArrayList<String> favorite = new ArrayList<String>();
-    //     favorite.add("Red");
-    //     favorite.add("Orange");
-    //     favorite.add("Pho");
-        
-    // }
- 
-//   @Override
-//   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//         Gson gson = new Gson();
-//         String json = gson.toJson();
-//         response.setContentType("application/json;");
-//         response.getWriter().println(json);
-//   }
+
    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     
     String text = request.getParameter("text-input");
-    Entity taskEntity = new Entity("Task");
-    taskEntity.setProperty("text", text);
+
+    //String imageUrl = getUploadedFileUrl(request, "image");
+
+    Entity message = new Entity("message");
+    message.setProperty("text", text);
+    //taskEntity.setProperty("image", imageUrl);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(taskEntity);
- Query query = new Query("Task");
+    datastore.put(message);
+
+    Query query = new Query("message").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
+
    List<String> tasks = new ArrayList<>();
- for (Entity entity : results.asIterable()) {
+
+    for (Entity entity : results.asIterable()) {
       String comment = (String) entity.getProperty("text");
+      long timestamp = (long) entity.getProperty("timestamp");
+     // String picture = (String) entity.getProperty("imageUrl");
       String task = new String(comment);
+     // String pic = new String(picture);
+      
       tasks.add(task);
+      //tasks.add(pic);
     }
+    
     Gson gson = new Gson();
     // Respond with the result.
     response.setContentType("text/html;");
     response.getWriter().println(gson.toJson(tasks));
   }
+
+// ]  private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
+//     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+//     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
+//     List<BlobKey> blobKeys = blobs.get("image");
+
+//     // User submitted form without selecting a file, so we can't get a URL. (dev server)
+//     if (blobKeys == null || blobKeys.isEmpty()) {
+//       return null;
+//     }
+
+//     // Our form only contains a single file input, so get the first index.
+//     BlobKey blobKey = blobKeys.get(0);
+
+//     // User submitted form without selecting a file, so we can't get a URL. (live server)
+//     BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
+//     if (blobInfo.getSize() == 0) {
+//       blobstoreService.delete(blobKey);
+//       return null;
+//     }
+
+//     // We could check the validity of the file here, e.g. to make sure it's an image file
+//     // https://stackoverflow.com/q/10779564/873165
+
+//     // Use ImagesService to get a URL that points to the uploaded file.
+//     ImagesService imagesService = ImagesServiceFactory.getImagesService();
+//     ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
+//     String url = imagesService.getServingUrl(options);
+
+//     // GCS's localhost preview is not actually on localhost,
+//     // so make the URL relative to the current domain.
+//     if(url.startsWith("http://localhost:8080/")){
+//       url = url.replace("http://localhost:8080/", "/");
+//     }
+//     return url;
+//   }
+
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     if (value == null) {
@@ -76,4 +122,5 @@ public class DataServlet extends HttpServlet {
     }
     return value;
   }
+  
 }
