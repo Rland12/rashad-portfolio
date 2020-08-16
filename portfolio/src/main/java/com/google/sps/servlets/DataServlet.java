@@ -15,6 +15,8 @@
 package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.blobstore.BlobInfo;
 import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
@@ -41,35 +43,38 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/form-content")
 public class DataServlet extends HttpServlet {
 
+private static class Message {
+    private String uniqueKey;
+    private String message;
+    //private String imageUrl;
+    private long timestamp;
 
-   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the input from the form.
-    
-    String text = request.getParameter("text-input");
+    public Message(Key uniqueKey, String message, long time) {
+      this.uniqueKey = KeyFactory.keyToString(uniqueKey);
+      this.message = message;
+      //this.imageUrl = imageUrl;
+      this.timestamp = time;
+    }
+  }
 
-    //String imageUrl = getUploadedFileUrl(request, "image");
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    Entity message = new Entity("message");
-    message.setProperty("text", text);
-    //taskEntity.setProperty("image", imageUrl);
+    Query query = new Query("Message").addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(message);
-
-    Query query = new Query("message").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
-   List<String> tasks = new ArrayList<>();
+   ArrayList<Message> tasks = new ArrayList<>();
 
     for (Entity entity : results.asIterable()) {
-      String comment = (String) entity.getProperty("text");
-      long timestamp = (long) entity.getProperty("timestamp");
+    Message newMessage = new Message((Key) entity.getKey(),
+                                        (String) entity.getProperty("text"),
+                                        (long) entity.getProperty("timestamp"));
+        
      // String picture = (String) entity.getProperty("imageUrl");
-      String task = new String(comment);
-     // String pic = new String(picture);
-      
-      tasks.add(task);
+     
+      tasks.add(newMessage);
       //tasks.add(pic);
     }
     
@@ -77,6 +82,24 @@ public class DataServlet extends HttpServlet {
     // Respond with the result.
     response.setContentType("text/html;");
     response.getWriter().println(gson.toJson(tasks));
+    }
+
+   @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    
+    String text = request.getParameter("text-input");
+    long timestamp = System.currentTimeMillis();
+
+    //String imageUrl = getUploadedFileUrl(request, "image");
+
+    Entity message = new Entity("message");
+    message.setProperty("text", text);
+    message.setProperty("timestamp", timestamp);
+   //message.setProperty("image", imageUrl);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(message);
   }
 
 // ]  private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
