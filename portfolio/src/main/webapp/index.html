@@ -10,7 +10,7 @@
 	<script src="script.js"></script>
 </head>
 
-<body onload="fetchBlobstoreUrlAndShowForm()">
+<body onload="loadComments(); fetchBlobstoreUrlAndShowForm();">
 	<div class="home-parallax">
 		<div class="home-text">
 			<h1>Hi, my name is Rashad</h1><br>
@@ -34,13 +34,15 @@
 				<p>Here is what people are saying about me.</p><br>
 				<form id="my-post" action="/form-content" method="POST" enctype="multipart/form-data">
 					<p>Type Comment here:</p>
-					<textarea name="text-input" placeholder="Comment..."></textarea>
+					<textarea name="message" placeholder="Comment..."></textarea>
 					<input type="file" name="image">
-					<input type="submit" />
+					  <button type="submit">Submit</button>
     			</form>
 					<!-- <button onclick="getDataUsingAsyncAwait()">Comment</button> -->
-					<div id="data-container"></div>
-					<img id="post-image" src="" >
+					<div id="comment-container">
+                        <!-- <img id="image-Url" src="" >  -->
+                    </div>
+					
 			</div>
 			</div>
 </body>

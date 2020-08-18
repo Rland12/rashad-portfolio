@@ -3,10 +3,7 @@ body, html {
   margin: 0;
   font-family: 'Comfortaa', cursive;
   color:white;
-}
-
-p{
-    font-size: 18px;
+  font-size: 18px;
 }
 
 .home-parallax {
@@ -33,10 +30,11 @@ data-container{
 #content {
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
+  width: 75%;
   display: flex;
   align-items: center;
   text-align: center;
+  padding-bottom: 3%;
 }
 .rashad-suit{
     object-fit: contain;
@@ -55,12 +53,16 @@ background-image: url('images/homepage-image.gif');
     justify-content: center;
     align-items: center;
     text-align: center;
-    color:white;
     text-shadow: 2px 2px black;
+    overflow: hidden;
 }
-/* .about{
-    
-} */
+.p-border {
+  border: thin solid white;
+  display: flex;
+  margin: 10px;
+  padding: 10px;
+  width: 300px;
+}
 /* #greeting-container {
   margin-top: 20px;
 } */
