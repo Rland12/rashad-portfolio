@@ -6,8 +6,16 @@ body, html {
   font-size: 18px;
 }
 
+nav{
+    width:100%;
+    color:black;
+}
+li{
+    display:inline-block;
+    list-style-type:none;
+}
 .home-parallax {
-    background-image: url('images/homepage-image.gif');
+    background-image: repeating-linear-gradient(10deg, red, blue 2330px);
     height: 100%; 
     background-attachment: fixed;
     background-position: center;
@@ -35,6 +43,7 @@ data-container{
   align-items: center;
   text-align: center;
   padding-bottom: 3%;
+  color:black;
 }
 .rashad-suit{
     object-fit: contain;
